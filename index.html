@@ -1,0 +1,911 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Family Calendar App&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- React + ReactDOM + Babel (voor JSX in de browser) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(135deg, #f5f7ff, #fef6ff);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #1f2933;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#root {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 1200px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.app-shell {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: 2fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 900px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.app-shell {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 18px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.badge {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef2ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4f46e5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-title span:first-child {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.3rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-title span:last-child {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-nav {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef2ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4f46e5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: background 0.15s ease, transform 0.1s ease;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e0e7ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: translateY(-1px);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-outline {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #374151;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-outline:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f3f4f6;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-secondary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f3f4f6;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #374151;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-secondary:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar-grid {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(7, 1fr);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.weekday {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.04em;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding-bottom: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.day-cell {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-height: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.day-cell:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f3f4ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: #e0e7ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: translateY(-1px);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.day-cell.other-month {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.35;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.day-number {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.day-number.today {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #f97316;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-pill {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef2ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-pill:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e0e7ff;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-pill-main {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-width: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-overflow: ellipsis;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-time {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.65rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.event-avatars {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.avatar {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.65rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(15, 23, 42, 0.08);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.thumb-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 5px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.thumb-btn.active {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #4ade80;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: #22c55e;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #064e3b;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.thumb-btn span.icon {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sidebar-section {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sidebar-section p {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field label {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4b5563;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field input,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field textarea {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: border-color 0.15s ease, box-shadow 0.15s ease;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resize: vertical;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field input:focus,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field textarea:focus {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: #6366f1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.chip-row {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.chip {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.chip.active {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef2ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: #6366f1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4338ca;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.chip-color-dot {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.members-list {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.member-tag {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 3px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f3f4f6;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.member-name {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.member-delete-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4b5563;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.member-delete-btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #fecaca;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #991b1b;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.muted {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #9ca3af;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.divider {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;div id="root"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script type="text/babel"&gt;</p>
+<p class="p1">const { useState, useMemo, useEffect } = React;</p>
+<p class="p2"><br></p>
+<p class="p1">// URL voor in WhatsApp-berichten</p>
+<p class="p1">const APP_URL = window.location.origin + window.location.pathname;</p>
+<p class="p2"><br></p>
+<p class="p1">// Helpers</p>
+<p class="p1">function formatDateKey(date) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return date.toISOString().slice(0, 10);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function getCalendarDays(year, monthIndex) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const firstOfMonth = new Date(year, monthIndex, 1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const startDay = firstOfMonth.getDay(); // 0 = Sun</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const offset = (startDay + 6) % 7;<span class="Apple-converted-space">      </span>// Monday = 0</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const days = [];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const firstCellDate = new Date(year, monthIndex, 1 - offset);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let i = 0; i &lt; 42; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const d = new Date(firstCellDate);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>d.setDate(firstCellDate.getDate() + i);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>days.push(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return days;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];</p>
+<p class="p2"><br></p>
+<p class="p1">const COLOR_PALETTE = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#f97316", // orange</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#6366f1", // indigo</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#ec4899", // pink</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#22c55e", // green</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#06b6d4", // cyan</p>
+<p class="p1"><span class="Apple-converted-space">  </span>"#a855f7", // purple</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">function App() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const today = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [currentMonth, setCurrentMonth] = useState(today.getMonth());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [currentYear, setCurrentYear] = useState(today.getFullYear());</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [familyMembers, setFamilyMembers] = useState([</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 1, name: "You", color: "#6366f1" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 2, name: "Alex", color: "#f97316" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: 3, name: "Taylor", color: "#22c55e" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [currentUserId, setCurrentUserId] = useState(1);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [events, setEvents] = useState([</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 1,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>title: "Sunday brunch",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>date: formatDateKey(today),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>time: "11:00",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>description: "Family brunch at grandma's",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>invitedMemberIds: [1, 2, 3],</p>
+<p class="p1"><span class="Apple-converted-space">      </span>joinedMemberIds: [1, 2],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const calendarDays = useMemo(</p>
+<p class="p1"><span class="Apple-converted-space">    </span>() =&gt; getCalendarDays(currentYear, currentMonth),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>[currentYear, currentMonth]</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const monthNames = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"January","February","March","April","May","June",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"July","August","September","October","November","December"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handlePrevMonth = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (currentMonth === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentMonth(11);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentYear(y =&gt; y - 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentMonth(m =&gt; m - 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleNextMonth = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (currentMonth === 11) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentMonth(0);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentYear(y =&gt; y + 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentMonth(m =&gt; m + 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleAddMember = (name) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!name.trim()) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nextColor = COLOR_PALETTE[familyMembers.length % COLOR_PALETTE.length];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const newMember = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: Date.now(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>name: name.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: nextColor,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setFamilyMembers(prev =&gt; [...prev, newMember]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleDeleteMember = (memberId) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setFamilyMembers(prev =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (prev.length === 1) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("You need at least one family member in the calendar.");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return prev;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const updated = prev.filter(m =&gt; m.id !== memberId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentUserId(prevId =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>prevId === memberId ? (updated[0]?.id ?? null) : prevId</p>
+<p class="p1"><span class="Apple-converted-space">      </span>);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return updated;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>setEvents(prev =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>prev.map(ev =&gt; ({</p>
+<p class="p1"><span class="Apple-converted-space">        </span>...ev,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>invitedMemberIds: (ev.invitedMemberIds || []).filter(id =&gt; id !== memberId),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>joinedMemberIds: (ev.joinedMemberIds || []).filter(id =&gt; id !== memberId),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}))</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleAddEvent = (eventData) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const newEvent = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: Date.now(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>title: eventData.title.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>date: eventData.date,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>time: eventData.time,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>description: eventData.description.trim(),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>invitedMemberIds: eventData.invitedMemberIds,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>joinedMemberIds: eventData.joinedMemberIds || [],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setEvents(prev =&gt; [...prev, newEvent]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleToggleJoin = (eventId, memberId) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!memberId) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>alert("Please select who you are first in the Family section.");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setEvents(prev =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>prev.map(ev =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (ev.id !== eventId) return ev;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const joined = new Set(ev.joinedMemberIds || []);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (joined.has(memberId)) joined.delete(memberId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>else joined.add(memberId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return { ...ev, joinedMemberIds: Array.from(joined) };</p>
+<p class="p1"><span class="Apple-converted-space">      </span>})</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleShareWhatsApp = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const text =</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"Join our family calendar 👨‍👩‍👧\n\nOpen this link on your phone or computer:\n" +</p>
+<p class="p1"><span class="Apple-converted-space">      </span>APP_URL;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const url = "https://wa.me/?text=" + encodeURIComponent(text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.open(url, "_blank");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const currentUser = familyMembers.find(m =&gt; m.id === currentUserId);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="app-shell"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{/* Calendar */}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="calendar-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="calendar-title"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;{monthNames[currentMonth]} {currentYear}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;Family calendar&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="calendar-nav"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button className="btn-outline btn" onClick={handlePrevMonth}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>← Prev</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button className="btn-outline btn" onClick={() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>setCurrentMonth(today.getMonth());</p>
+<p class="p1"><span class="Apple-converted-space">              </span>setCurrentYear(today.getFullYear());</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Today</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button className="btn-outline btn" onClick={handleNextMonth}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Next →</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="calendar-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{WEEKDAYS.map(d =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div key={d} className="weekday"&gt;{d}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>))}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{calendarDays.map((date, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dateKey = formatDateKey(date);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dayEvents = events.filter(ev =&gt; ev.date === dateKey);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isCurrentMonth = date.getMonth() === currentMonth;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isToday = date.toDateString() === today.toDateString();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div</p>
+<p class="p1"><span class="Apple-converted-space">                </span>key={idx}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className={"day-cell" + (isCurrentMonth ? "" : " other-month")}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className={"day-number" + (isToday ? " today" : "")}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>{date.getDate()}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{dayEvents.map(ev =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>const joined = new Set(ev.joinedMemberIds || []);</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>const joinedMembers = familyMembers.filter(m =&gt; joined.has(m.id));</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>const isCurrentUserJoined = joined.has(currentUserId);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div key={ev.id} className="event-pill" title={ev.description}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="event-pill-main"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="event-title"&gt;{ev.title}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="event-time"&gt;{ev.time || "All day"}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="event-avatars"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{joinedMembers.slice(0, 3).map(m =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>key={m.id}</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>className="avatar"</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>style={{ background: m.color }}</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>title={m.name}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>{m.name[0].toUpperCase()}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>{joinedMembers.length &gt; 3 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="avatar" style={{ background: "#9ca3af" }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>+{joinedMembers.length - 3}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>className={"thumb-btn" + (isCurrentUserJoined ? " active" : "")}</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>onClick={() =&gt; handleToggleJoin(ev.id, currentUserId)}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span className="icon"&gt;👍&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;span&gt;{joinedMembers.length || 0}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>{/* Sidebar */}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Current user / switcher */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="sidebar-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="card-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="card-title"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>👨‍👩‍👧 Family</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span className="badge"&gt;Who are you?&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p&gt;Pick yourself so your 👍 joins events with the right avatar.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="chip-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{familyMembers.map(m =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                </span>key={m.id}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className={"chip" + (m.id === currentUserId ? " active" : "")}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; setCurrentUserId(m.id)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>className="chip-color-dot"</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>style={{ background: m.color }}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span&gt;{m.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{m.id === currentUserId &amp;&amp; &lt;span&gt;✓&lt;/span&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="divider" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Add member + WhatsApp invite */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;AddMemberSection</p>
+<p class="p1"><span class="Apple-converted-space">          </span>onAddMember={handleAddMember}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>familyMembers={familyMembers}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>onDeleteMember={handleDeleteMember}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>onShareWhatsApp={handleShareWhatsApp}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="divider" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Add event */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;AddEventSection</p>
+<p class="p1"><span class="Apple-converted-space">          </span>onAddEvent={handleAddEvent}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>familyMembers={familyMembers}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>currentDateKey={formatDateKey(today)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>currentUserId={currentUserId}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function AddMemberSection({ onAddMember, familyMembers, onDeleteMember, onShareWhatsApp }) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [name, setName] = useState("");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleSubmit = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!name.trim()) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>onAddMember(name);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setName("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="sidebar-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="card-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="card-title"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>📨 Invite family</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span className="badge"&gt;Members&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Add everyone in the house so they can be invited to events.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>You can also share the calendar link via WhatsApp.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;form onSubmit={handleSubmit}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Family member name&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type="text"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>placeholder="e.g. Mom, Dad, Emma..."</p>
+<p class="p1"><span class="Apple-converted-space">            </span>value={name}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onChange={e =&gt; setName(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button className="btn" type="submit"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>+ Add member</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">            </span>className="btn btn-secondary"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type="button"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onClick={onShareWhatsApp}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>📲 Invite via WhatsApp</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/form&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="members-list"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{familyMembers.map(m =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div key={m.id} className="member-tag"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="chip-color-dot"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>style={{ background: m.color }}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span className="member-name"&gt;{m.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">              </span>type="button"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="member-delete-btn"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>title="Delete member"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>onClick={() =&gt; onDeleteMember(m.id)}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>×</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function AddEventSection({ onAddEvent, familyMembers, currentDateKey, currentUserId }) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [title, setTitle] = useState("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [date, setDate] = useState(currentDateKey);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [time, setTime] = useState("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [description, setDescription] = useState("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [invitedIds, setInvitedIds] = useState(</p>
+<p class="p1"><span class="Apple-converted-space">    </span>familyMembers.map(m =&gt; m.id)</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setInvitedIds(familyMembers.map(m =&gt; m.id));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, [familyMembers.length]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleSubmit = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!title.trim() || !date) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>onAddEvent({</p>
+<p class="p1"><span class="Apple-converted-space">      </span>title,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>date,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>time,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>description,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>invitedMemberIds: invitedIds,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>joinedMemberIds: currentUserId ? [currentUserId] : [],</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>setTitle("");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setTime("");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setDescription("");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setDate(currentDateKey);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const toggleInvited = (memberId) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setInvitedIds(prev =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const s = new Set(prev);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (s.has(memberId)) s.delete(memberId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else s.add(memberId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return Array.from(s);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="sidebar-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="card-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="card-title"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>📅 New appointment</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span className="badge"&gt;Event&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;Create an appointment and invite your family. Everyone can tap 👍 to join.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;form onSubmit={handleSubmit}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Title&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type="text"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>placeholder="e.g. Movie night, Dentist, Soccer practice..."</p>
+<p class="p1"><span class="Apple-converted-space">            </span>value={title}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onChange={e =&gt; setTitle(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Date&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type="date"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>value={date}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onChange={e =&gt; setDate(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Time (optional)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type="time"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>value={time}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onChange={e =&gt; setTime(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Description (optional)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;textarea</p>
+<p class="p1"><span class="Apple-converted-space">            </span>rows="2"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>placeholder="Add details like address or what to bring..."</p>
+<p class="p1"><span class="Apple-converted-space">            </span>value={description}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onChange={e =&gt; setDescription(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Invite&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="chip-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{familyMembers.map(m =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                </span>type="button"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>key={m.id}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className={"chip" + (invitedIds.includes(m.id) ? " active" : "")}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; toggleInvited(m.id)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>className="chip-color-dot"</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>style={{ background: m.color }}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span&gt;{m.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button className="btn" type="submit"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>+ Add appointment</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p className="muted" style={{ marginTop: 6 }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Tip: The person creating the appointment auto-joins with 👍 when you’ve selected who you are.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">const root = ReactDOM.createRoot(document.getElementById("root"));</p>
+<p class="p1">root.render(&lt;App /&gt;);</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
